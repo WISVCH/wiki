@@ -25,7 +25,7 @@ RUN { \
     echo 'opcache.fast_shutdown=1'; \
     echo 'opcache.enable_cli=1'; \
     # Disable PHP errors
-    echo 'displat_errors=Off'; \
+    echo 'display_errors=Off'; \
     } > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 WORKDIR /var/www

@@ -64,3 +64,4 @@ RUN wget https://github.com/cosmocode/dokuwiki-plugin-oauthgeneric/zipball/maste
 ADD ./conf /var/www/dokuwiki/conf
 # Set permissions
 RUN chown -R www-data:www-data /var/www/dokuwiki/conf
+RUN chown -R www-data:www-data /var/www/dokuwiki/data

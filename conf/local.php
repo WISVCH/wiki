@@ -9,6 +9,7 @@
 $conf['title'] = 'CH Wiki';
 $conf['start'] = 'start';
 $conf['breadcrumbs'] = 0;
+$conf['basedir'] = '/';
 $conf['useacl'] = 1;
 $conf['superuser'] = '@admin,@chbeheer';
 $conf['disableactions'] = 'register,check,subscribe,unsubscribe,resendpwd,profile';

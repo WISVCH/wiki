@@ -100,7 +100,9 @@ commissies:wifi	@wifi	2
 commissies:wifi:*	@wifi	16
 commissies:wocky	@wocky	2
 commissies:wocky:*	@wocky	16
-start	@ALL	1
+start	@ALL	0
+start   @user 1
 start	@bestuur	2
 start	@oudbestuur	2
-wiki:*	@ALL	1
+wiki:*	@ALL	0
+wiki:*  @user 1

@@ -27,7 +27,7 @@ bestuur:*	@bestuur	16
 bestuur:*	@oudbestuur	16
 bestuur:*	@vc	16
 chmanual:*	@user	16
-commissies	@ALL	1
+commissies	@user	1
 commissies	@bestuur	2
 commissies	@oudbestuur	2
 commissies	@vc	2
@@ -40,10 +40,10 @@ commissies:akcie	@akcie	2
 commissies:akcie	@lucie	1
 commissies:akcie:*	@akcie	16
 commissies:akcie:*	@lucie	1
-commissies:algemeen	@ALL	1
+commissies:algemeen	@user	1
 commissies:algemeen	@bestuur	2
 commissies:algemeen	@oudbestuur	2
-commissies:algemeen:*	@ALL	1
+commissies:algemeen:*	@user	1
 commissies:algemeen:*	@bestuur	16
 commissies:algemeen:*	@oudbestuur	16
 commissies:annucie	@annucie	2

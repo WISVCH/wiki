@@ -86,8 +86,8 @@ commissies:match	@match	2
 commissies:match:*	@match	16
 commissies:pi	@pi	2
 commissies:pi:*	@pi	16
-commissies:reis	@studyvisit	2
-commissies:reis:*	@studyvisit	16
+commissies:study_visit_committee	@studyvisit	2
+commissies:study_visit_committee:*	@studyvisit	16
 commissies:sjaarcie	@sjaarcie	2
 commissies:sjaarcie:*	@sjaarcie	16
 commissies:symposium	@symposium	2

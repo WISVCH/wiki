@@ -46,11 +46,10 @@ RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
 # Add DokuWiki plugins
 
 # Make plugins directory
-add ./plugins /var/www/dokuwiki/lib/plugins
+ADD ./plugins /var/www/dokuwiki/lib/plugins
 
 # Load the configurations
 ADD ./conf /var/www/dokuwiki/conf
 # Set permissions
 RUN chown -R www-data:www-data /var/www/dokuwiki/lib/plugins
 RUN chown -R www-data:www-data /var/www/dokuwiki/conf
-RUN chown -R www-data:www-data /var/www/dokuwiki/data

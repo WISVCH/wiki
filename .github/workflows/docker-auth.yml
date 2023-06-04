@@ -2,7 +2,7 @@ name: Docker
 on:
   push:
     branches:
-      - main
+      - auth
   schedule:
     - cron: "54 2 2 * *"
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/wisvch/wiki
+          images: ghcr.io/wisvch/wiki2
           tags: type=sha, prefix={{date 'YYYYMMDD'}}-
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
@@ -33,4 +33,4 @@ jobs:
           context: .
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/auth' }}

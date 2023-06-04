@@ -30,8 +30,6 @@ RUN { \
 
 WORKDIR /var/www
 
-RUN chown -R www-data:www-data /var/www/dokuwiki/data
-
 RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
     tar xvf dokuwiki-stable.tgz && \
     mv dokuwiki-*/ dokuwiki && \
@@ -55,3 +53,4 @@ ADD ./conf /var/www/dokuwiki/conf
 # Set permissions
 RUN chown -R www-data:www-data /var/www/dokuwiki/lib/plugins
 RUN chown -R www-data:www-data /var/www/dokuwiki/conf
+RUN chown -R www-data:www-data /var/www/dokuwiki/data

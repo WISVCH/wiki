@@ -30,6 +30,8 @@ RUN { \
 
 WORKDIR /var/www
 
+RUN chown -R www-data:www-data /var/www/dokuwiki
+
 RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
     tar xvf dokuwiki-stable.tgz && \
     mv dokuwiki-*/ dokuwiki && \

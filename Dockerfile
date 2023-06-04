@@ -53,4 +53,3 @@ ADD ./conf /var/www/dokuwiki/conf
 # Set permissions
 RUN chown -R www-data:www-data /var/www/dokuwiki/lib/plugins
 RUN chown -R www-data:www-data /var/www/dokuwiki/conf
-RUN chown -R www-data:www-data /var/www/dokuwiki/data

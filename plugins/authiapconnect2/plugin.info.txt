@@ -1,6 +1,6 @@
-base   iap-connect2-auth
+base   authiapconnect2
 author Joep de Jong
-email  joepj@ch.tudelft.nl
+email  joep@joepdejong.com
 date   2023-06-04
 name   IAP - Connect2 Auth
 desc   Provides user authentication using GCE IAP and Connect2 for Groups

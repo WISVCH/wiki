@@ -71,6 +71,7 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         try {
             // TODO: use token instead of hardcoded username
             $token = $this->getIapToken();
+            print_r($token);
 
             // Get user groups from Connect2
             $user = 'joepj@ch.tudelft.nl';

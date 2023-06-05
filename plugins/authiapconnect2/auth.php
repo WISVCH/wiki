@@ -47,7 +47,7 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
     private function getUserDataFromToken($token)
     {
         // Get request to Connect2
-        $url = $this->getConf('groups_endpoint');
+        $url = $this->getConf('connect2_endpoint');
 
         $curl = curl_init();
 

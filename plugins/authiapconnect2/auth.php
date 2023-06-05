@@ -28,70 +28,97 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
     private function getIapToken()
     {
         $headers = apache_request_headers();
-        print_r($headers);
         if (isset($headers['X-Goog-IAP-JWT-Assertion'])) {
             return $headers['X-Goog-IAP-JWT-Assertion'];
         }
 
-        return 'TEST-TOKEN'; // TODO: remove
+        $devToken = getenv('IAP_DEV_TOKEN');
+        if ($devToken) {
+            return $devToken;
+        }
         throw new Exception('No token found');
     }
 
     /**
-     * Get groups from Connect2
-     * @param string $user
+     * Get user data from Connect2
+     * @param string $token
      * @return array
      */
-    private function getUserGroups($user)
+    private function getUserDataFromToken($token)
     {
         // Get request to Connect2
         $url = $this->getConf('groups_endpoint');
-        // Replace ':email' with $user
-        $url = str_replace(':email', $user, $url);
 
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl = curl_init();
 
-        print_r($response);
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'X-Goog-IAP-JWT-Assertion: ' . $token
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
         if ($httpcode != 200) {
-            throw new Exception('Could not get groups');
+            throw new Exception('Could not get user data');
         }
 
-        $groups = json_decode($response, true);
+        return json_decode($response, true);
+    }
 
-        return $groups;
+
+    /**
+     * Validate user data from Connect2
+     * @param array $data
+     * @return bool
+     */
+    private function validateUserData($data)
+    {
+        // Check if data has email and groups
+        if (!isset($data['email'])) {
+            throw new Exception('No email found');
+        }
+
+        if (!isset($data['groups'])) {
+            throw new Exception('No groups found');
+        }
+
+        return true;
     }
 
     public function trustExternal($user, $pass, $sticky = false)
     {
         global $USERINFO;
 
-        try {
-            // TODO: use token instead of hardcoded username
-            $token = $this->getIapToken();
-            print_r($token);
+        $token = $this->getIapToken();
 
-            // Get user groups from Connect2
-            $user = 'joepj@ch.tudelft.nl';
-            $groups = $this->getUserGroups($user);
-
-            // $USERINFO = $this->getUserData($user);
-            $USERINFO = [
-                'name' => 'Joep de Jong',
-                'mail' => 'joepj@ch.tudelft.nl',
-                'grps' => $groups,
-            ];
-
-            $_SERVER['REMOTE_USER']                = $user;
-            $_SESSION[DOKU_COOKIE]['auth']['user'] = $user;
-            $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
-
-            return true;
-        } catch (Exception $e) {
+        // Get user data from Connect2
+        $data = $this->getUserDataFromToken($token);
+        if (!$this->validateUserData($data)) {
             return false;
         }
+
+        $USERINFO = [
+            'name' => str_replace('@ch.tudelft.nl', '', $data['email']),
+            'mail' => $data['email'],
+            'grps' => $data['groups']
+        ];
+
+        $_SERVER['REMOTE_USER']                = $USERINFO['name'];
+        $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['name'];
+        $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
+
+        return true;
     }
 }

@@ -102,7 +102,6 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         global $USERINFO;
 
         $token = $this->getIapToken();
-        print_r($token);
 
         // Get user data from Connect2
         $data = $this->getUserDataFromToken($token);

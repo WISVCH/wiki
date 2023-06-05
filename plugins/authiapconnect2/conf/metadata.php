@@ -1,2 +1,2 @@
 <?php
-$meta['groups_endpoint']      = array('string', '_caution' => 'danger');
+$meta['CONNECT2_HOST']      = array('string', '_caution' => 'danger');

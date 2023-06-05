@@ -17,4 +17,4 @@ $conf['userewrite'] = '1';
 $conf['useslash'] = 1;
 
 $conf['authtype']    = 'authiapconnect2';
-$conf['plugin']['authiapconnect2']['groups_endpoint']      = 'http://localhost:3001/groups/slugs';
+$conf['plugin']['authiapconnect2']['connect2_endpoint'] = getenv('CONNECT2_HOST') . '/groups/slugs';

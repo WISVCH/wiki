@@ -1,3 +1,3 @@
 <?php
 
-$conf['groups_endpoint'] = 'http://localhost:3001/groups/slugs';
+$conf['CONNECT2_HOST'] = 'http://localhost:3001/groups/slugs';

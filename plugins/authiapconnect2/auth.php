@@ -28,8 +28,9 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
     private function getIapToken()
     {
         $headers = apache_request_headers();
-        if (isset($headers['x-goog-iap-jwt-assertion'])) {
-            return $headers['x-goog-iap-jwt-assertion'];
+        print_r($headers);
+        if (isset($headers['X-Goog-IAP-JWT-Assertion'])) {
+            return $headers['X-Goog-IAP-JWT-Assertion'];
         }
 
         return 'TEST-TOKEN'; // TODO: remove

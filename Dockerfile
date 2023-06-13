@@ -46,21 +46,10 @@ RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
 # Add DokuWiki plugins
 
 # Make plugins directory
-RUN mkdir -p /var/www/dokuwiki/lib/plugins
-
-RUN wget https://github.com/cosmocode/dokuwiki-plugin-oauth/zipball/master -O oauth.zip && \
-    unzip oauth.zip -d /var/www/dokuwiki/lib/plugins/ && \
-    mv /var/www/dokuwiki/lib/plugins/cosmocode-dokuwiki-plugin-oauth-* /var/www/dokuwiki/lib/plugins/oauth && \
-    rm oauth.zip && \
-    chown -R www-data:www-data /var/www/dokuwiki/lib/plugins/oauth
-
-RUN wget https://github.com/cosmocode/dokuwiki-plugin-oauthgeneric/zipball/master -O oauthgeneric.zip && \
-    unzip oauthgeneric.zip -d /var/www/dokuwiki/lib/plugins/ && \
-    mv /var/www/dokuwiki/lib/plugins/cosmocode-dokuwiki-plugin-oauthgeneric-* /var/www/dokuwiki/lib/plugins/oauthgeneric && \
-    rm oauthgeneric.zip && \
-    chown -R www-data:www-data /var/www/dokuwiki/lib/plugins/oauthgeneric
+ADD ./plugins /var/www/dokuwiki/lib/plugins
 
 # Load the configurations
 ADD ./conf /var/www/dokuwiki/conf
 # Set permissions
+RUN chown -R www-data:www-data /var/www/dokuwiki/lib/plugins
 RUN chown -R www-data:www-data /var/www/dokuwiki/conf

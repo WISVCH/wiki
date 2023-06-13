@@ -12,26 +12,9 @@ $conf['breadcrumbs'] = 0;
 $conf['basedir'] = '/';
 $conf['useacl'] = 1;
 $conf['superuser'] = '@admin,@beheer';
-$conf['disableactions'] = 'register,check,subscribe,unsubscribe,resendpwd,profile';
+// $conf['disableactions'] = 'register,check,subscribe,unsubscribe,resendpwd,profile';
 $conf['userewrite'] = '1';
 $conf['useslash'] = 1;
-$conf['authtype'] = 'oauth';
 
-# OAuth2
-$conf['plugin']['oauth']['singleService'] = 1;
-$conf['plugin']['oauth']['register-on-auth'] = 1;
-$conf['plugin']['oauth']['overwrite-groups'] = 1;
-
-# OAuth2 Generic
-
-$conf['plugin']['oauthgeneric']['key'] = getenv('WISVCH_CONNECT_CLIENT_ID');
-$conf['plugin']['oauthgeneric']['secret'] = getenv('WISVCH_CONNECT_CLIENT_SECRET');
-$conf['plugin']['oauthgeneric']['authurl'] = 'https://connect.ch.tudelft.nl/authorize';
-$conf['plugin']['oauthgeneric']['tokenurl'] = 'https://connect.ch.tudelft.nl/token';
-$conf['plugin']['oauthgeneric']['userurl'] = 'https://connect.ch.tudelft.nl/userinfo';
-$conf['plugin']['oauthgeneric']['authmethod'] = '1';
-$conf['plugin']['oauthgeneric']['scopes'] = array('openid', 'profile', 'email', 'auth', 'offline_access');
-$conf['plugin']['oauthgeneric']['json-user'] = 'sub';
-$conf['plugin']['oauthgeneric']['json-name'] = 'name';
-$conf['plugin']['oauthgeneric']['json-mail'] = 'email';
-$conf['plugin']['oauthgeneric']['json-grps'] = 'google_groups';
+$conf['authtype']    = 'authiapconnect2';
+$conf['plugin']['authiapconnect2']['connect2_endpoint'] = getenv('CONNECT2_HOST') . '/groups/slugs';

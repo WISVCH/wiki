@@ -112,7 +112,7 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         $USERINFO = [
             'name' => str_replace('@ch.tudelft.nl', '', $data['email']),
             'mail' => $data['email'],
-            'grps' => $data['groups']
+            'grps' => array_merge($data['groups'], ['user']),
         ];
 
         $_SERVER['REMOTE_USER']                = $USERINFO['name'];

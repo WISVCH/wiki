@@ -26,7 +26,7 @@ bestuur:*	@epa	1
 bestuur:*	@bestuur	16
 bestuur:*	@senaat	16
 bestuur:*	@vc	16
-chmanual:*	@user	16
+chmanual:*	@user	1
 commissies	@user	1
 commissies	@bestuur	2
 commissies	@senaat	2

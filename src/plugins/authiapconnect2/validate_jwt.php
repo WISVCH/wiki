@@ -84,20 +84,18 @@ function validate_jwt($iapJwt, $expectedAudience)
     ]);
 
     if (!$jwt) {
-        return print('Failed to validate JWT: Invalid JWT');
+        throw new Exception('Failed to validate JWT: Invalid JWT');
+    }
+
+    $expectedAudiences = explode(',', $expectedAudience);
+    if (!in_array($jwt['aud'], $expectedAudiences)) {
+        throw new Exception('Invalid audience');
     }
 
     // Validate token by checking issuer and audience fields.
     assert($jwt['iss'] == 'https://cloud.google.com/iap');
 
-    $expectedAudiences = explode(',', $expectedAudience);
     assert(in_array($jwt['aud'], $expectedAudiences));  
 
     return $jwt;
-    // print('Printing user identity information from ID token payload:');
-    // printf('sub: %s', $jwt['sub']);
-    // printf('email: %s', $jwt['email']);
-    // echo '<pre>';
-    // print_r($jwt);
-    // echo '</pre>';
 }

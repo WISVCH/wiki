@@ -1,0 +1,18 @@
+{
+    "name": "wisvch/wiki",
+    "description": "Wiki of W.I.S.V. 'Christiaan Huygens'",
+    "authors": [
+        {
+            "name": "Joep de Jong",
+            "email": "joep@joepdejong.com",
+            "homepage": "https://joepdejong.com"
+        }
+    ],
+    "require": {
+        "kelvinmo/simplejwt": "^0.5.1",
+        "google/auth": "^1.27"
+    },
+    "config": {
+        "vendor-dir": "vendor-wisvch"
+    }
+}

@@ -41,8 +41,13 @@ RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
 #ENV APACHE_RUN_GROUP=www-data
 #USER 4001:33
 
+# Install dependencies
+WORKDIR /var/www/dokuwiki
+ADD src/composer.json /var/www/dokuwiki/composer.json
+RUN composer install
 
 # Add DokuWiki plugins
+WORKDIR /var/www
 
 # Make plugins directory
 # ADD src/plugins /var/www/dokuwiki/lib/plugins

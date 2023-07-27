@@ -3,6 +3,8 @@
 use dokuwiki\Logger;
 use dokuwiki\Utf8\Sort;
 
+require "validate_jwt.php";
+
 /**
  * Plaintext authentication backend
  *
@@ -48,7 +50,7 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
      * @param string $token
      * @return array
      */
-    private function getUserDataFromToken($token)
+    private function getUserDataByTokenFromConnect2($token)
     {
         // Get request to Connect2
         $url = $this->getConf('connect2_endpoint');
@@ -107,17 +109,25 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
 
         $token = $this->getIapToken();
 
-        // Get user data from Connect2
-        $data = $this->getUserDataFromToken($token);
-        if (!$this->validateUserData($data)) {
-            return false;
-        }
+        try {
+            $data = validate_jwt($token, getenv('IAP_EXPECTED_AUDIENCE'));
+            $USERINFO = [
+                'name' => $data['gcip']['name'],
+                'mail' => $data['gcip']['email'],
+                'grps' => array_merge(explode(',',$data['gcip']['groups']), ['user'])
+            ];
+        } catch (Exception $e) {
+            $data = $this->getUserDataByTokenFromConnect2($token);
+            if (!$this->validateUserData($data)) {
+                return false;
+            }
 
-        $USERINFO = [
-            'name' => str_replace('@ch.tudelft.nl', '', $data['email']),
-            'mail' => $data['email'],
-            'grps' => array_merge($data['groups'], ['user']),
-        ];
+            $USERINFO = [
+                'name' => str_replace('@ch.tudelft.nl', '', $data['email']),
+                'mail' => $data['email'],
+                'grps' => array_merge($data['groups'], ['user']),
+            ];
+        }        
 
         $_SERVER['REMOTE_USER']                = $USERINFO['name'];
         $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['name'];

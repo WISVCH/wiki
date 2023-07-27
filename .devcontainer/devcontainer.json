@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "./Dockerfile"
+	},
+	// Add the mounts section to mount the src directory into /src in the container.
+	"mounts": [
+		"source=${localWorkspaceFolder}/src/plugins/authiapconnect2,target=/var/www/dokuwiki/lib/plugins/authiapconnect2,type=bind,consistency=cached"
+	],
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8080],
+
+	// Uncomment the next line to run commands after the container is created.
+	"postCreateCommand": "cd /var/www/dokuwiki && apache2-foreground",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "containerUser": "www-data",
+
+
+	// Load .env
+	"runArgs": [
+		"--env-file",
+		"dev.env"
+	]
+}

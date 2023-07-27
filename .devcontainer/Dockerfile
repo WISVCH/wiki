@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM mcr.microsoft.com/devcontainers/php:8.2
 LABEL stage=builder
 
 COPY src/000-default.conf /etc/apache2/sites-available/000-default.conf
@@ -33,8 +33,7 @@ WORKDIR /var/www
 RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
     tar xvf dokuwiki-stable.tgz && \
     mv dokuwiki-*/ dokuwiki && \
-    chown -R www-data:www-data /var/www/dokuwiki && \
-    sed -i 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf
+    chown -R www-data:www-data /var/www/dokuwiki
 
 # run apache2 as non-root
 #RUN useradd --no-log-init -r -g www-data --uid=4001 dokuwiki
@@ -46,7 +45,8 @@ RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
 # Add DokuWiki plugins
 
 # Make plugins directory
-ADD src/plugins /var/www/dokuwiki/lib/plugins
+# ADD src/plugins /var/www/dokuwiki/lib/plugins
+# PLUGINS ARE MOUNTED
 
 # Load the configurations
 ADD src/conf /var/www/dokuwiki/conf
@@ -54,3 +54,16 @@ ADD src/conf /var/www/dokuwiki/conf
 # Set permissions
 RUN chown -R www-data:www-data /var/www/dokuwiki/lib/plugins
 RUN chown -R www-data:www-data /var/www/dokuwiki/conf
+
+# !!! Fuck it its a devcontainer. I cannot get apache to run as www-data.
+RUN chmod -R 777 /var/www/dokuwiki/data/
+
+
+# Run apache
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+# EXPOSE 8080
+
+USER www-data
+# Apache run group
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data

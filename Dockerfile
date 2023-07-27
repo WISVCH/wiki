@@ -44,6 +44,7 @@ RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
 
 # Install dependencies
 WORKDIR /var/www/dokuwiki
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ADD src/composer.json /var/www/dokuwiki/composer.json
 RUN composer install
 

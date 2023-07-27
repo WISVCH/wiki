@@ -18,3 +18,4 @@ $conf['useslash'] = 1;
 
 $conf['authtype']    = 'authiapconnect2';
 $conf['plugin']['authiapconnect2']['connect2_endpoint'] = getenv('CONNECT2_HOST') . '/groups/slugs';
+$conf['plugin']['authiapconnect2']['iap_expected_audience'] = getenv('IAP_EXPECTED_AUDIENCE');

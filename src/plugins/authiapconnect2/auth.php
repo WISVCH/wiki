@@ -110,7 +110,7 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         $token = $this->getIapToken();
 
         try {
-            $data = validate_jwt($token, getenv('IAP_EXPECTED_AUDIENCE'));
+            $data = validate_jwt($token, $this->getConf('iap_expected_audience'));
             $USERINFO = [
                 'name' => $data['gcip']['name'],
                 'mail' => $data['gcip']['email'],

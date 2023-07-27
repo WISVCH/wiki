@@ -32,6 +32,10 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
             return $headers['X-Goog-IAP-JWT-Assertion'];
         }
 
+        if (isset($headers['x-goog-iap-jwt-assertion'])) {
+            return $headers['x-goog-iap-jwt-assertion'];
+        }
+
         $devToken = getenv('IAP_DEV_TOKEN');
         if ($devToken) {
             return $devToken;

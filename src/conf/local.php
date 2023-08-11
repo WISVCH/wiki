@@ -15,6 +15,7 @@ $conf['superuser'] = '@admin,@beheer';
 // $conf['disableactions'] = 'register,check,subscribe,unsubscribe,resendpwd,profile';
 $conf['userewrite'] = '1';
 $conf['useslash'] = 1;
+$conf['useheading'] = 1;
 
 $conf['authtype']    = 'authiapconnect2';
 $conf['plugin']['authiapconnect2']['connect2_endpoint'] = getenv('CONNECT2_HOST') . '/groups/slugs';

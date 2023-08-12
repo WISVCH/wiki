@@ -1,8 +1,5 @@
 <?php
 
-use dokuwiki\Logger;
-use dokuwiki\Utf8\Sort;
-
 require "validate_jwt.php";
 
 /**
@@ -45,94 +42,42 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         throw new Exception('No token found');
     }
 
-    /**
-     * Get user data from Connect2
-     * @param string $token
-     * @return array
-     */
-    private function getUserDataByTokenFromConnect2($token)
-    {
-        // Get request to Connect2
-        $url = $this->getConf('connect2_endpoint');
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => array(
-                'X-Goog-IAP-JWT-Assertion: ' . $token
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        if ($httpcode != 200) {
-            throw new Exception('Could not get user data');
-        }
-
-        return json_decode($response, true);
-    }
-
-
-    /**
-     * Validate user data from Connect2
-     * @param array $data
-     * @return bool
-     */
-    private function validateUserData($data)
-    {
-        // Check if data has email and groups
-        if (!isset($data['email'])) {
-            throw new Exception('No email found');
-        }
-
-        if (!isset($data['groups'])) {
-            throw new Exception('No groups found');
-        }
-
-        return true;
-    }
-
     public function trustExternal($user, $pass, $sticky = false)
     {
         global $USERINFO;
 
-        $token = $this->getIapToken();
+        $sticky ? $sticky = true : $sticky = false; //sanity check
+ 
+		if (!empty($_SESSION[DOKU_COOKIE]['auth']['info'])) {
+			$USERINFO['name'] = $_SESSION[DOKU_COOKIE]['auth']['info']['name'];
+			$USERINFO['mail'] = $_SESSION[DOKU_COOKIE]['auth']['info']['mail'];
+			$USERINFO['grps'] = $_SESSION[DOKU_COOKIE]['auth']['info']['grps'];
+			$_SERVER['REMOTE_USER'] = $_SESSION[DOKU_COOKIE]['auth']['user'];
+			return true;
+		}
+		
+        if (!empty($user)) {
 
-        try {
-            $data = validate_jwt($token, $this->getConf('iap_expected_audience'));
-            $USERINFO = [
-                'name' => $data['gcip']['name'],
-                'mail' => $data['gcip']['email'],
-                'grps' => array_merge(explode(',',$data['gcip']['groups']), ['user'])
-            ];
-        } catch (Exception $e) {
-            $data = $this->getUserDataByTokenFromConnect2($token);
-            if (!$this->validateUserData($data)) {
+            $token = $this->getIapToken();
+
+            try {
+                $data = validate_jwt($token, $this->getConf('iap_expected_audience'));
+                $USERINFO = [
+                    'name' => $data['gcip']['name'],
+                    'mail' => $data['gcip']['email'],
+                    'grps' => array_merge(explode(',',$data['gcip']['groups']), ['user'])
+                ];
+            } catch (Exception $e) {
                 return false;
-            }
+            }        
 
-            $USERINFO = [
-                'name' => str_replace('@ch.tudelft.nl', '', $data['email']),
-                'mail' => $data['email'],
-                'grps' => array_merge($data['groups'], ['user']),
-            ];
-        }        
+            $_SERVER['REMOTE_USER']                = $USERINFO['name'];
+            $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['name'];
+            $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
 
-        $_SERVER['REMOTE_USER']                = $USERINFO['name'];
-        $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['name'];
-        $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
-
-        return true;
+            return true;
+        }
+        
+        return false;
     }
 }

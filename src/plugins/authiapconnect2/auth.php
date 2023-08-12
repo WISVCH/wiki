@@ -55,29 +55,24 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
 			$_SERVER['REMOTE_USER'] = $_SESSION[DOKU_COOKIE]['auth']['user'];
 			return true;
 		}
-		
-        if (!empty($user)) {
 
-            $token = $this->getIapToken();
+        $token = $this->getIapToken();
 
-            try {
-                $data = validate_jwt($token, $this->getConf('iap_expected_audience'));
-                $USERINFO = [
-                    'name' => $data['gcip']['name'],
-                    'mail' => $data['gcip']['email'],
-                    'grps' => array_merge(explode(',',$data['gcip']['groups']), ['user'])
-                ];
-            } catch (Exception $e) {
-                return false;
-            }        
-
+        try {
+            $data = validate_jwt($token, $this->getConf('iap_expected_audience'));
+            $USERINFO = [
+                'name' => $data['gcip']['name'],
+                'mail' => $data['gcip']['email'],
+                'grps' => array_merge(explode(',',$data['gcip']['groups']), ['user'])
+            ];
+            
             $_SERVER['REMOTE_USER']                = $USERINFO['name'];
             $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['name'];
             $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
-
+            
             return true;
-        }
-        
-        return false;
+        } catch (Exception $e) {
+            return false;
+        }        
     }
 }

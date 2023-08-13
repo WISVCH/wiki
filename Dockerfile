@@ -4,10 +4,6 @@ LABEL stage=builder
 COPY src/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY src/dokuwiki.conf /etc/apache2/conf-enabled/dokuwiki.conf
 
-ADD https://ch.tudelft.nl/certs/wisvch.crt /usr/local/share/ca-certificates/wisvch.crt
-RUN chmod 0644 /usr/local/share/ca-certificates/wisvch.crt && \
-    update-ca-certificates
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wget libxml2-dev unzip && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false && \

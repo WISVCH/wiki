@@ -39,6 +39,15 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         if ($devToken) {
             return $devToken;
         }
+
+        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'GoogleHC') !== false) {
+            return 'GoogleHC';
+        }
+
+        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'kube-probe') !== false) {
+            return 'kube-probe';
+        }
+
         throw new Exception('No token found');
     }
 
@@ -47,14 +56,14 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
         global $USERINFO;
 
         $sticky ? $sticky = true : $sticky = false; //sanity check
- 
-		if (!empty($_SESSION[DOKU_COOKIE]['auth']['info'])) {
-			$USERINFO['name'] = $_SESSION[DOKU_COOKIE]['auth']['info']['name'];
-			$USERINFO['mail'] = $_SESSION[DOKU_COOKIE]['auth']['info']['mail'];
-			$USERINFO['grps'] = $_SESSION[DOKU_COOKIE]['auth']['info']['grps'];
-			$_SERVER['REMOTE_USER'] = $_SESSION[DOKU_COOKIE]['auth']['user'];
-			return true;
-		}
+
+        if (!empty($_SESSION[DOKU_COOKIE]['auth']['info'])) {
+            $USERINFO['name'] = $_SESSION[DOKU_COOKIE]['auth']['info']['name'];
+            $USERINFO['mail'] = $_SESSION[DOKU_COOKIE]['auth']['info']['mail'];
+            $USERINFO['grps'] = $_SESSION[DOKU_COOKIE]['auth']['info']['grps'];
+            $_SERVER['REMOTE_USER'] = $_SESSION[DOKU_COOKIE]['auth']['user'];
+            return true;
+        }
 
         $token = $this->getIapToken();
 
@@ -63,16 +72,16 @@ class auth_plugin_authiapconnect2 extends DokuWiki_Auth_Plugin
             $USERINFO = [
                 'name' => $data['gcip']['name'],
                 'mail' => $data['gcip']['email'],
-                'grps' => array_merge(explode(',',$data['gcip']['groups']), ['user'])
+                'grps' => array_merge(explode(',', $data['gcip']['groups']), ['user'])
             ];
-            
+
             $_SERVER['REMOTE_USER']                = $USERINFO['name'];
             $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['name'];
             $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
-            
+
             return true;
         } catch (Exception $e) {
             return false;
-        }        
+        }
     }
 }

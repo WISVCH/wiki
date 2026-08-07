@@ -5,7 +5,8 @@ COPY src/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY src/dokuwiki.conf /etc/apache2/conf-enabled/dokuwiki.conf
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget libxml2-dev unzip && \
+    apt-get install -y --no-install-recommends wget libgmp-dev libxml2-dev unzip && \
+    docker-php-ext-install gmp && \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false && \
     rm -rf /var/lib/apt/lists/*
 

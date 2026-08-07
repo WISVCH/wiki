@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "kelvinmo/simplejwt": "^1.1",
         "google/auth": "^1.27"
     },
     "config": {

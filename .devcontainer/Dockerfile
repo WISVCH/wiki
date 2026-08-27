@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/php:8.2
+FROM mcr.microsoft.com/devcontainers/php:8.5
 LABEL stage=builder
 
 COPY src/000-default.conf /etc/apache2/sites-available/000-default.conf

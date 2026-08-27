@@ -27,10 +27,9 @@ RUN { \
 
 WORKDIR /var/www
 
-ARG DOKUWIKI_RELEASE=release-2026-07-14a
-RUN DOKUWIKI_VERSION="${DOKUWIKI_RELEASE#release-}" && \
-    wget "https://github.com/dokuwiki/dokuwiki/releases/download/${DOKUWIKI_RELEASE}/dokuwiki-${DOKUWIKI_VERSION}.tgz" && \
-    tar xvf "dokuwiki-${DOKUWIKI_VERSION}.tgz" && \
+ARG DOKUWIKI_RELEASE=2026-07-14a
+RUN wget "https://github.com/dokuwiki/dokuwiki/releases/download/release-${DOKUWIKI_RELEASE}/dokuwiki-${DOKUWIKI_RELEASE}.tgz" && \
+    tar xvf "dokuwiki-${DOKUWIKI_RELEASE}.tgz" && \
     mv dokuwiki-*/ dokuwiki && \
     chown -R www-data:www-data /var/www/dokuwiki && \
     sed -i 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf

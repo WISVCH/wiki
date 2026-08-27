@@ -13,6 +13,7 @@
       "managerFilePatterns": ["/^Dockerfile$/"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "dokuwiki/dokuwiki",
+      "extractVersionTemplate": "^release-(?<version>.*)$",
       "versioningTemplate": "loose",
       "matchStrings": [
         "ARG DOKUWIKI_RELEASE=(?<currentValue>\\S+)"

@@ -27,7 +27,7 @@ RUN { \
 
 WORKDIR /var/www
 
-ARG DOKUWIKI_RELEASE=2026-07-14a
+ARG DOKUWIKI_RELEASE=2026-07-14b
 RUN wget "https://github.com/dokuwiki/dokuwiki/releases/download/release-${DOKUWIKI_RELEASE}/dokuwiki-${DOKUWIKI_RELEASE}.tgz" && \
     tar xvf "dokuwiki-${DOKUWIKI_RELEASE}.tgz" && \
     mv dokuwiki-*/ dokuwiki && \

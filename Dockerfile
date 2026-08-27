@@ -1,4 +1,4 @@
-FROM php:8.5-apache
+FROM php:8.5.9-apache
 LABEL stage=builder
 
 COPY src/000-default.conf /etc/apache2/sites-available/000-default.conf
@@ -27,8 +27,11 @@ RUN { \
 
 WORKDIR /var/www
 
-RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
-    tar xvf dokuwiki-stable.tgz && \
+# renovate: datasource=github-releases depName=dokuwiki/dokuwiki versioning=loose
+ARG DOKUWIKI_RELEASE=release-2026-07-14a
+RUN DOKUWIKI_VERSION="${DOKUWIKI_RELEASE#release-}" && \
+    wget "https://github.com/dokuwiki/dokuwiki/releases/download/${DOKUWIKI_RELEASE}/dokuwiki-${DOKUWIKI_VERSION}.tgz" && \
+    tar xvf "dokuwiki-${DOKUWIKI_VERSION}.tgz" && \
     mv dokuwiki-*/ dokuwiki && \
     chown -R www-data:www-data /var/www/dokuwiki && \
     sed -i 's/Listen 80/Listen 8080/g' /etc/apache2/ports.conf
@@ -42,8 +45,8 @@ RUN wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz && \
 # Install dependencies
 WORKDIR /var/www/dokuwiki
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-ADD src/composer.json /var/www/dokuwiki/composer.json
-RUN composer install
+COPY src/composer.json src/composer.lock ./
+RUN composer install --no-dev --no-interaction --prefer-dist --no-progress
 
 # Add DokuWiki plugins
 WORKDIR /var/www

@@ -27,7 +27,6 @@ RUN { \
 
 WORKDIR /var/www
 
-# renovate: datasource=github-releases depName=dokuwiki/dokuwiki versioning=loose
 ARG DOKUWIKI_RELEASE=release-2026-07-14a
 RUN DOKUWIKI_VERSION="${DOKUWIKI_RELEASE#release-}" && \
     wget "https://github.com/dokuwiki/dokuwiki/releases/download/${DOKUWIKI_RELEASE}/dokuwiki-${DOKUWIKI_VERSION}.tgz" && \

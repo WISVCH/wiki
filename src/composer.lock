@@ -477,16 +477,16 @@
         },
         {
             "name": "kelvinmo/simplejwt",
-            "version": "v1.1.3",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kelvinmo/simplejwt.git",
-                "reference": "2c1a1ec892198d911672fecbe000df3cfb364a06"
+                "reference": "6e7bae88fa9ac40150df54bc0729e9d9d43097f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kelvinmo/simplejwt/zipball/2c1a1ec892198d911672fecbe000df3cfb364a06",
-                "reference": "2c1a1ec892198d911672fecbe000df3cfb364a06",
+                "url": "https://api.github.com/repos/kelvinmo/simplejwt/zipball/6e7bae88fa9ac40150df54bc0729e9d9d43097f1",
+                "reference": "6e7bae88fa9ac40150df54bc0729e9d9d43097f1",
                 "shasum": ""
             },
             "require": {
@@ -499,7 +499,7 @@
                 "consolidation/robo": "^4.0 || ^5.0",
                 "phlak/semver": "^5.0 || ^6.0",
                 "phpstan/phpstan": "^2.0.1",
-                "phpunit/phpunit": "^9.6.33 || ^10.5.63 || ^11.5.50"
+                "phpunit/phpunit": "^9.6.38 || ^10.5.63 || ^11.5.50 || ^12.5.43 || ^13.4.5"
             },
             "suggest": {
                 "ext-sodium": "Provides support for OKP (X25519/Ed25519) keys",
@@ -530,9 +530,10 @@
             ],
             "support": {
                 "issues": "https://github.com/kelvinmo/simplejwt/issues",
-                "source": "https://github.com/kelvinmo/simplejwt/tree/v1.1.3"
+                "source": "https://github.com/kelvinmo/simplejwt/tree/v1.1.4"
             },
-            "time": "2026-08-29T02:35:40+00:00"
+            "time": "2026-11-10T09:38:40+00:00",
+            "published-time": "2026-11-10T09:38:47+00:00"
         },
         {
             "name": "psr/cache",

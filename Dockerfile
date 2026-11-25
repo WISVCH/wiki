@@ -1,4 +1,4 @@
-FROM php:8.6.0-apache
+FROM php:8.6.0-apache@sha256:17e914da4f48db2a395f3a9e69206cd311b2d8dfdebc802477a31a69a246ecff
 LABEL stage=builder
 
 COPY src/000-default.conf /etc/apache2/sites-available/000-default.conf
